@@ -85,18 +85,42 @@ firebase.auth().onAuthStateChanged(async function(user) {
 
       // 🔥 Practice - comments
       // get a reference to the newly created post comment button
+      let commentButton = document.querySelector(`#post-comment-button-${postId}`)
+      
       // event listener for the post comment button
+      commentButton.addEventListener(`click`,async function (event){
         // ignore the default behavior
+        event.preventDefault()
         // get a reference to the newly created comment input
+        let commentInput = document.querySelector(`#comment-${postId}`)
+        
         // get the body of the comment
+        let commentBody = commentInput.value
+
         // Build the URL for our posts API
+        let url = `/.netlify/functions/create_comment?postId=${postId}&userName=${user.displayName}&body=${commentBody}`
+
         // Fetch the url, wait for a response, store the response in memory
+        let response = await fetch(url)
+
         // refresh the page
+        location.reload()
+
+      })
+
 
       // 🔥 Lab - like button
+      let likeButton = document.querySelector(`#like-button-${postId}`)
       // - Create an event listener for the like button of each post
+      likeButton.addEventListener(`click`,async function (event){
+      // ignore the default behavior
+      event.preventDefault()
       // - Create and fetch a "like" lambda function (in /netlify/functions/create_like.js)
+      let likeUrl = `/.netlify/functions/create_like?postId=${postId}&userId=${user.uid}`
+      let response = await fetch(likeUrl)
       // - Refresh the page when done fetching the lambda function
+      location.reload()
+      })
     }
 
     // get a reference to the "Post" button
